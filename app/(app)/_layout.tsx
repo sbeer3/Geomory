@@ -1,43 +1,17 @@
-import { useAuth } from '../lib/authContext';
-import React, { useEffect } from 'react';
-import { useRouter, usePathname } from 'expo-router';
 import { Stack } from 'expo-router';
-import { Text, View } from 'react-native';
-import { colors } from '../styles/colors';
-import { Pressable } from 'react-native';
+import UserHeaderButton from '../components/UserHeaderButton';
+import { colors } from '../../styles/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { Pressable } from 'react-native';
 
 export default function AppLayout() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();  // <-- Get current route
-
-  useEffect(() => {
-    if (!loading && !user) {
-      if (pathname !== '/authPage') {  // <-- This is the guard
-        router.replace('/authPage');
-      }
-    }
-  }, [user, loading, pathname]);
-
-  if (loading) {
-    return (
-      <View>
-        <Text>Loading user...</Text>
-      </View>
-    );
-  }
-
-  if (!user) {
-    return null;  // No UI while redirecting
-  }
-
   return (
     <Stack
       screenOptions={({ route, navigation }) => {
         const canGoBack = navigation.canGoBack();
-
+        
         return {
+            
           headerShown: true,
           headerStyle: {
             backgroundColor: colors.background,
@@ -60,13 +34,29 @@ export default function AppLayout() {
                 <Ionicons name="menu-outline" size={28} color={colors.greenPrimary} />
               </Pressable>
             ),
-          headerRight: () => (
-            <Pressable onPress={() => alert('User Name: ' + user.email)} style={{ paddingRight: 12 }}>
-              <Ionicons name="person-circle-outline" size={28} color={colors.greenPrimary} />
-            </Pressable>
-          ),
+          headerRight: () => <UserHeaderButton />,
+          
         };
-      }}
-    />
+      }}>
+      <Stack.Screen
+        name="index"
+        options={{ title: 'Home' }}
+      />
+        <Stack.Screen
+        name="new"
+        options={{ title: 'New Entry' }}
+      />
+
+    <Stack.Screen
+        name="map"
+        options={{ title: 'Memory Map' }}
+      />
+
+    <Stack.Screen
+      name="[id]"
+      options={{ headerShown: false, headerTitle: '', }}
+      />
+    </Stack>
+    
   );
 }

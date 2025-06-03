@@ -1,19 +1,12 @@
-import { Stack } from 'expo-router';
-import { Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+// app/_layout.tsx
+import React, { useEffect } from 'react';
+
 import { AuthProvider } from '../lib/authContext';
-import { colors } from '../styles/colors';
-import { useAuth } from '../lib/authContext';
-import AppLayout from './AppLayout';
-import { useFonts } from 'expo-font';
-
-
+import { Slot } from 'expo-router';
 export default function RootLayout() {
-
   return (
     <AuthProvider>
-      <AppLayout />
-    
+      <Slot />
     </AuthProvider>
   );
 }

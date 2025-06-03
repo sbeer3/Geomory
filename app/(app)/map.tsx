@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet, Dimensions,ActivityIndicator, } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+
 import React, { useEffect, useState } from 'react';
-import { db } from '../lib/firebase';
+import { db } from '../../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { useRouter } from 'expo-router';
-
+import { globalStyles } from '@/styles/global';
 export default function GlobalMap() {
   const router = useRouter();
     const [activities, setActivities] = useState<any[]>([]);
@@ -46,12 +47,12 @@ export default function GlobalMap() {
           <Marker
             key={activity.id}
             coordinate={activity.baseLocation}
-            title={activity.name}
             onPress={() => router.push(`/${activity.id}`)}
           >
-            <Callout>
-              <Text>{activity.name}</Text>
-            </Callout>
+                                  <Image
+                        source={{ uri: activity.photos?.[0]?.uri}}
+                        style={globalStyles.markerImage}
+                      />
           </Marker>
         ))}
       </MapView>

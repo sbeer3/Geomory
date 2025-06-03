@@ -1,8 +1,6 @@
 // lib/authContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { auth } from './firebase'; // ✅ adjust path as needed
+import { auth } from './firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 
@@ -13,6 +11,7 @@ type AuthContextType = {
   displayName: string | null;
   loading: boolean;
 };
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   uid: null,
@@ -20,23 +19,29 @@ const AuthContext = createContext<AuthContextType>({
   displayName: null,
   loading: true,
 });
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser ?? null);
-      setLoading(false);
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    setUser(firebaseUser ?? null);
+    setLoading(false);
+  });
 
-      if (!firebaseUser) {
+  return () => unsubscribe();
+}, []);
+
+
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
         router.replace('/authPage');
       }
-    });
-
-    return () => unsubscribe();
-  }, []);
+    }
+  }, [user, loading]);
 
   return (
     <AuthContext.Provider
@@ -52,6 +57,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
 
 export const useAuth = () => useContext(AuthContext);

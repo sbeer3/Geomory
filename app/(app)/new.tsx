@@ -15,10 +15,10 @@ import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import uuid from 'react-native-uuid';
 
-import { db, storage } from '../lib/firebase';
-import { globalStyles } from '../styles/global';
-import { colors } from '../styles/colors';
-import { useAuth } from '../lib/authContext';
+import { db, storage } from '../../lib/firebase';
+import { globalStyles } from '../../styles/global';
+import { colors } from '../../styles/colors';
+import { useAuth } from '../../lib/authContext';
 
 import * as Location from 'expo-location';
 
@@ -110,6 +110,7 @@ const handlePickPhoto = async () => {
       await uploadBytes(storageRef, blob);
 
       const downloadURL = await getDownloadURL(storageRef);
+      const storagePath = storageRef.fullPath;  // 🔥 capture storage path here
       const loc = await Location.reverseGeocodeAsync({ latitude, longitude });
       let city: string = "unknown";
       let region: string = "unknown";
@@ -132,6 +133,7 @@ const handlePickPhoto = async () => {
         photos: [
           {
             uri: downloadURL,
+            storagePath: storagePath,
             caption: photo.caption,
             latitude: latitude,
             longitude: longitude,
@@ -140,7 +142,7 @@ const handlePickPhoto = async () => {
         createdAt: Date.now(),
       });
 
-      router.push(`/${docRef.id}`);
+      router.replace(`/${docRef.id}`);
     } catch (e) {
       console.error('Error uploading photo or creating activity:', e);
       Alert.alert('Error', 'Could not create activity.');

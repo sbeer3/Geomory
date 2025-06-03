@@ -111,6 +111,12 @@ feather: {
   fontSize: 24,
 },
 
+
+featherTab: {
+  color: colors.textSecondary,
+  fontSize: 24,
+},
+
 callout: {
   alignItems: 'center',
   backgroundColor: 'white',
@@ -192,8 +198,8 @@ photoMarker: {
     fontFamily: 'Quicksand-Regular',
   },
   thumbnail: {
-    width: 60,
-    height: 60,
+    width: 200,
+    height: 200,
     borderRadius: 8,
     marginRight: 10,
   },
@@ -219,10 +225,49 @@ photoMarker: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     position: 'absolute',
-    top: 600, // adjust as needed
-    
+  },
+  deleteButton: {
+    backgroundColor: colors.danger,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    borderRadius: 16,
+    flexDirection: 'row', // 🧭 horizontal layout
+    padding: 12,
+    marginBottom: 16,
+    elevation: 3,
   },
 
+  deleteText: {
+    color: colors.textPrimary,
+    fontWeight: '600',
+    marginTop: 5,
+  },
+
+
+  detailsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    // borderBottomWidth: StyleSheet.hairlineWidth,
+    // borderColor: '#ddd',
+    flexWrap: 'wrap',
+    backgroundColor: colors.background,
+    marginBottom: 20,
+  },
+  detailsItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailsText: {
+    marginLeft: 5,
+    fontSize: 17,
+    color: colors.textSecondary,
+
+  },
+  detailsIcon: {
+    color: colors.textSecondary,
+  },
 });
 
 
